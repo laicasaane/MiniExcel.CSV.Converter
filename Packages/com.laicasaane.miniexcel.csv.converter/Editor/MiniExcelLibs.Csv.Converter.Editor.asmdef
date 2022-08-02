@@ -1,0 +1,22 @@
+{
+    "name": "MiniExcelLibs.Csv.Converter.Editor",
+    "rootNamespace": "MiniExcelLibs.Csv.Converter.Editor",
+    "references": [
+        "MiniExcelLibs",
+        "MiniExcelLibs.Csv.Converter",
+        "MiniExcelLibs.Controls.Runtime",
+        "MiniExcelLibs.Controls.Editor",
+        "MiniExcelLibs.Utilities"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

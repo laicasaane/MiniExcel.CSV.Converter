@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/com.laicasaane.miniexcel.csv.converter/Editor/Stylesheets/MiniExcelCsvConverterSettingsEditor.uss?fileID=7433441132597879392&amp;guid=77a4cc660b79d5c4687fb070858069eb&amp;type=3#MiniExcelCsvConverterSettingsEditor" />
+    <Style src="project://database/Packages/com.laicasaane.miniexcel.csv.converter/Controls/Runtime/FolderBrowser/FolderBrowser.uss?fileID=7433441132597879392&amp;guid=f6d5c292e0beccd46b7a206268d5f61b&amp;type=3#FolderBrowser" />
+    <ui:VisualElement class="folder-browser__group group-with-header">
+        <ui:Label text="Excel Folder" display-tooltip-when-elided="true" enable-rich-text="false" tooltip="Select a folder which contains Excel (.xlsx) files" />
+        <MiniExcelLibs.Controls.FolderBrowser is-relative-path="true" show-absolute-path="true" name="folder-browser-excel" />
+    </ui:VisualElement>
+    <ui:VisualElement class="folder-browser__group group-with-header">
+        <ui:Label text="CSV Folder" display-tooltip-when-elided="true" enable-rich-text="false" tooltip="Select a folder to export CSV files" />
+        <MiniExcelLibs.Controls.FolderBrowser is-relative-path="true" show-absolute-path="true" name="folder-browser-csv" />
+    </ui:VisualElement>
+    <ui:VisualElement class="group-with-header">
+        <ui:Label text="Ignore Sheets Start With" display-tooltip-when-elided="true" enable-rich-text="false" />
+        <ui:TextField picking-mode="Ignore" name="ignore-sheets" />
+    </ui:VisualElement>
+    <ui:VisualElement name="button__group">
+        <ui:Button text="Refresh Excel Files" display-tooltip-when-elided="true" name="refresh-button" enable-rich-text="false" />
+        <ui:Button text="Convert To CSV" display-tooltip-when-elided="true" name="convert-button" enable-rich-text="false" />
+    </ui:VisualElement>
+    <ui:VisualElement name="file-list__group">
+        <ui:ListView name="file-list" show-alternating-row-backgrounds="ContentOnly" show-border="true" show-foldout-header="true" header-title="Excel Files" />
+    </ui:VisualElement>
+</ui:UXML>

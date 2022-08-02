@@ -1,0 +1,17 @@
+{
+    "name": "MiniExcelLibs.Csv.Converter",
+    "rootNamespace": "MiniExcelLibs.Csv.Converter",
+    "references": [
+        "MiniExcelLibs",
+        "MiniExcelLibs.Utilities"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

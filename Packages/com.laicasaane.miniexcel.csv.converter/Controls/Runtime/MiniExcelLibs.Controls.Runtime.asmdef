@@ -1,0 +1,16 @@
+{
+    "name": "MiniExcelLibs.Controls.Runtime",
+    "rootNamespace": "MiniExcelLibs.Controls.Runtime",
+    "references": [
+        "MiniExcelLibs.Utilities"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

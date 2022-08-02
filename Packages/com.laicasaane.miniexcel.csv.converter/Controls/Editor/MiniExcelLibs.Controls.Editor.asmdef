@@ -1,0 +1,18 @@
+{
+    "name": "MiniExcelLibs.Controls.Editor",
+    "rootNamespace": "MiniExcelLibs.Controls.Editor",
+    "references": [
+        "MiniExcelLibs.Controls.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

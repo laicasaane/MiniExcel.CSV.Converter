@@ -1,0 +1,7 @@
+.folder-browser .absolute-path-group {
+    background-color: rgb(165, 165, 165);
+}
+
+.folder-browser .absolute-path-group .unity-label {
+    color: rgba(53, 53, 53, 255);
+}

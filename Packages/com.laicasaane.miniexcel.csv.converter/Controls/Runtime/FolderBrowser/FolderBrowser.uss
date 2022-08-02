@@ -1,0 +1,35 @@
+.folder-browser .unity-text-field {
+    flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+.folder-browser .input-group {
+    flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.folder-browser .absolute-path-group {
+    flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.folder-browser .absolute-path-group .unity-label {
+    flex-direction: row;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    flex-shrink: 1;
+    white-space: normal;
+}
+
+.folder-browser .absolute-path-group.hidden {
+    display: none;
+}
+
+.folder-browser .root {
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
