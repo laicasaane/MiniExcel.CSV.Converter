@@ -15,6 +15,7 @@ MonoBehaviour:
   _relativeExcelFolderPath: Resources
   _relativeCsvFolderPath: Resources-CSV
   _ignoreSheetsStartWith: <>
+  _postProcessor: {fileID: 11400000, guid: a68f09aa84f057446b08f5e1c7b43687, type: 2}
   _excelFiles:
   - path: Samples
     selected: 1

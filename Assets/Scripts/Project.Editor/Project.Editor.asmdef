@@ -2,7 +2,8 @@
     "name": "Project.Editor",
     "rootNamespace": "Project.Editor",
     "references": [
-        "Project.Runtime"
+        "Project.Runtime",
+        "MiniExcelLibs.Csv.Converter"
     ],
     "includePlatforms": [
         "Editor"
