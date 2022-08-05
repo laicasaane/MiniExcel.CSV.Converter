@@ -7,9 +7,8 @@ using UnityEngine.UIElements;
 using MiniExcelLibs.Controls;
 using MiniExcelLibs.Controls.Editor;
 using MiniExcelLibs.Utilities;
-using System.Linq;
 
-namespace MiniExcelLibs.Csv.Converter.Editor
+namespace MiniExcelLibs.Csv.Converter
 {
     [CustomEditor(typeof(MiniExcelCsvConverterSettings))]
     public class MiniExcelCsvConverterSettingsEditor : UnityEditor.Editor
@@ -17,6 +16,7 @@ namespace MiniExcelLibs.Csv.Converter.Editor
         public static readonly string folderBrowserExcelUssName = "folder-browser-excel";
         public static readonly string folderBrowserCsvUssName = "folder-browser-csv";
         public static readonly string ignoreSheetsUssName = "ignore-sheets";
+        public static readonly string postProcessorUssName = "post-processor";
         public static readonly string fileListUssName = "file-list";
         public static readonly string fileItemUssClassName = "file-list__item";
         public static readonly string openExcelButtonUssName = "open-excel-button";
@@ -24,11 +24,6 @@ namespace MiniExcelLibs.Csv.Converter.Editor
         public static readonly string locateCsvButtonUssName = "locate-csv-button";
         public static readonly string refreshButtonUssName = "refresh-button";
         public static readonly string convertButtonUssName = "convert-button";
-
-        private const string EXCEL_EXT = ".xlsx";
-        private const string CSV_EXT = ".csv";
-        private const string EXCEL_FILTER = "*.xlsx";
-        private const string PROGRESS_TITLE = "Convert Excel to CSV";
 
         [SerializeField]
         private VisualTreeAsset _visualTree;
@@ -86,6 +81,17 @@ namespace MiniExcelLibs.Csv.Converter.Editor
                 if (ignoreSheets != null)
                 {
                     ignoreSheets.bindingPath = nameof(MiniExcelCsvConverterSettings._ignoreSheetsStartWith);
+                }
+            }
+
+            /// POST-PROCESSOR
+            {
+                var postProcessor = root.Q<ObjectField>(postProcessorUssName);
+
+                if (postProcessor != null)
+                {
+                    postProcessor.objectType = typeof(MiniExcelCsvPostProcessor);
+                    postProcessor.bindingPath = nameof(MiniExcelCsvConverterSettings._postProcessor);
                 }
             }
 
@@ -151,7 +157,7 @@ namespace MiniExcelLibs.Csv.Converter.Editor
             _fileMapNew.Clear();
             _settings.CopyFilesToMap(_fileMapPrev);
 
-            foreach (var filePath in Directory.EnumerateFiles(absolutePath, EXCEL_FILTER))
+            foreach (var filePath in Directory.EnumerateFiles(absolutePath, MiniExcelCsvConverter.EXCEL_FILTER))
             {
                 var fileName = Path.GetFileNameWithoutExtension(filePath);
 
@@ -249,7 +255,7 @@ namespace MiniExcelLibs.Csv.Converter.Editor
 
             var file = files[index];
             var folderPath = PathUtility.GetAbsolutePath(_settings._relativeExcelFolderPath);
-            path = Path.Combine(folderPath, $"{file.path}{EXCEL_EXT}").ToPlatformPath();
+            path = Path.Combine(folderPath, $"{file.path}{MiniExcelCsvConverter.EXCEL_EXT}").ToPlatformPath();
             return true;
         }
 
@@ -315,143 +321,9 @@ namespace MiniExcelLibs.Csv.Converter.Editor
 
             _isConverting = true;
 
-            ConvertExcelToCsv();
+            MiniExcelCsvConverter.Convert(_settings);
 
             _isConverting = false;
-        }
-
-        private void ConvertExcelToCsv()
-        {
-            var relativeCsvFolderPath = _settings._relativeCsvFolderPath;
-            var absoluteCsvFolderPath = PathUtility.GetAbsolutePath(relativeCsvFolderPath);
-            var absoluteExcelFolderPath = PathUtility.GetAbsolutePath(_settings._relativeExcelFolderPath);
-            var ignoreSheetsStartWith = _settings._ignoreSheetsStartWith;
-            var files = _settings._excelFiles;
-            var filesToConvert = new List<string>();
-
-            foreach (var file in files)
-            {
-                if (file.selected)
-                    filesToConvert.Add(file.path);
-            }
-
-            // Delete Folder + Create Folder + File Count
-            var steps = 2 + filesToConvert.Count;
-            var step = 1f / steps;
-
-            for (var i = 0; i < steps; i++)
-            {
-                if (i == 0)
-                {
-                    DeleteCsvFolder(relativeCsvFolderPath, absoluteCsvFolderPath, step * i);
-                    continue;
-                }
-
-                if (i == 1)
-                {
-                    CreateCsvFolder(relativeCsvFolderPath, absoluteCsvFolderPath, step * i);
-                    continue;
-                }
-
-                var index = i - 2;
-                var filePath = filesToConvert[index];
-                ConvertCsv(
-                    absoluteExcelFolderPath
-                    , absoluteCsvFolderPath
-                    , filePath
-                    , ignoreSheetsStartWith
-                    , step * i
-                    , step
-                );
-            }
-        }
-
-        private static void DeleteCsvFolder(string relative, string absolute, float progress)
-        {
-            EditorUtility.DisplayProgressBar(
-                PROGRESS_TITLE
-                , $"Delete directory: {relative}"
-                , progress
-            );
-
-            if (Directory.Exists(absolute))
-            {
-                Directory.Delete(absolute, true);
-            }
-
-            EditorUtility.ClearProgressBar();
-        }
-
-        private static void CreateCsvFolder(string relative, string absolute, float progress)
-        {
-            EditorUtility.DisplayProgressBar(
-                PROGRESS_TITLE
-                , $"Create directory: {relative}"
-                , progress
-            );
-
-            if (Directory.Exists(absolute) == false)
-            {
-                Directory.CreateDirectory(absolute);
-            }
-
-            EditorUtility.ClearProgressBar();
-        }
-
-        private static void ConvertCsv(
-            string excelFolderPath
-            , string csvFolderPath
-            , string filePath
-            , string ignoreSheetsStartWith
-            , float progress
-            , float step
-        )
-        {
-            var excelFilePath = Path.Combine(excelFolderPath, $"{filePath}{EXCEL_EXT}").ToPlatformPath();
-
-            if (File.Exists(excelFilePath) == false)
-                return;
-
-            using var stream = File.OpenRead(excelFilePath);
-
-            var sheetNames = new List<string>();
-
-            if (string.IsNullOrWhiteSpace(ignoreSheetsStartWith))
-                MiniExcel.GetSheetNames(stream, sheetNames);
-            else
-                MiniExcel.GetSheetNames(stream, sheetNames, x => x.StartsWith(ignoreSheetsStartWith) == false);
-
-            if (sheetNames.Count <= 0)
-                return;
-
-            var miniStep = step / sheetNames.Count;
-            var sheetCsvFolderPath = Path.Combine(csvFolderPath, filePath).ToPlatformPath();
-
-            if (Directory.Exists(sheetCsvFolderPath) == false)
-                Directory.CreateDirectory(sheetCsvFolderPath);
-
-            for (var i = 0; i < sheetNames.Count; i++)
-            {
-                var sheetName = sheetNames[i];
-
-                EditorUtility.DisplayProgressBar(
-                    PROGRESS_TITLE
-                    , $"Convert: {filePath} : {sheetName}"
-                    , progress + (miniStep * i)
-                );
-
-                var sheetFilePath = Path.Combine(sheetCsvFolderPath, $"{sheetName}{CSV_EXT}");
-
-                using (var csvStream = new FileStream(sheetFilePath, FileMode.CreateNew))
-                {
-                    var rows = MiniExcel.Query(excelFilePath, false, sheetName, ExcelType.XLSX)
-                        .Where(x => x.Keys.Any(k => x[k] != null));
-
-                    MiniExcel.SaveAs(csvStream, rows, printHeader: false, excelType: ExcelType.CSV);
-                }
-
-                EditorUtility.ClearProgressBar();
-            }
         }
     }
 }

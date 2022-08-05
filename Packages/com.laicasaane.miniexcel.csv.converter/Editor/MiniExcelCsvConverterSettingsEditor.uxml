@@ -3,15 +3,19 @@
     <Style src="project://database/Packages/com.laicasaane.miniexcel.csv.converter/Controls/Runtime/FolderBrowser/FolderBrowser.uss?fileID=7433441132597879392&amp;guid=f6d5c292e0beccd46b7a206268d5f61b&amp;type=3#FolderBrowser" />
     <ui:VisualElement class="folder-browser__group group-with-header">
         <ui:Label text="Excel Folder" display-tooltip-when-elided="true" enable-rich-text="false" tooltip="Select a folder which contains Excel (.xlsx) files" />
-        <MiniExcelLibs.Controls.FolderBrowser is-relative-path="true" show-absolute-path="true" name="folder-browser-excel" />
+        <MiniExcelLibs.Controls.FolderBrowser is-relative-path="true" show-absolute-path="true" name="folder-browser-excel" tooltip="Select a folder which contains Excel (.xlsx) files" />
     </ui:VisualElement>
     <ui:VisualElement class="folder-browser__group group-with-header">
         <ui:Label text="CSV Folder" display-tooltip-when-elided="true" enable-rich-text="false" tooltip="Select a folder to export CSV files" />
-        <MiniExcelLibs.Controls.FolderBrowser is-relative-path="true" show-absolute-path="true" name="folder-browser-csv" />
+        <MiniExcelLibs.Controls.FolderBrowser is-relative-path="true" show-absolute-path="true" name="folder-browser-csv" tooltip="Select a folder to export CSV files" />
     </ui:VisualElement>
     <ui:VisualElement class="group-with-header">
         <ui:Label text="Ignore Sheets Start With" display-tooltip-when-elided="true" enable-rich-text="false" />
         <ui:TextField picking-mode="Ignore" name="ignore-sheets" />
+    </ui:VisualElement>
+    <ui:VisualElement class="group-with-header">
+        <ui:Label text="Post Processor" display-tooltip-when-elided="true" tooltip="Process CSV files after the conversion" />
+        <uie:ObjectField tooltip="Process CSV files after the conversion" name="post-processor" allow-scene-objects="false" />
     </ui:VisualElement>
     <ui:VisualElement name="button__group">
         <ui:Button text="Refresh Excel Files" display-tooltip-when-elided="true" name="refresh-button" enable-rich-text="false" />

@@ -3,9 +3,13 @@
     "rootNamespace": "MiniExcelLibs.Csv.Converter",
     "references": [
         "MiniExcelLibs",
+        "MiniExcelLibs.Controls.Runtime",
+        "MiniExcelLibs.Controls.Editor",
         "MiniExcelLibs.Utilities"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
