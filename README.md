@@ -36,14 +36,15 @@ Assets > Create > MiniExcel > CSV Converter Settings
 
 ## Settings UI
 
-|                          |Description|
-|--------------------------|-----------|
-|`Excel Folder`            |Folder that contains `.xlsx` files, relative to the project root.|
-|`CSV Folder`              |Folder that contains exported `.csv` files, relative to the project root|
-|`Ignore Sheets Start With`|Will ignore any sheet whose name starts with this string|
-|`Refresh Excel Files`     |Refresh the list of `.xlsx` files|
-|`Convert To CSV`          |Convert only the selected `.xlsx` files into `.csv` files|
-|`Excel Files`             |The list of `.xlsx` files.|
+|                            |Description|
+|----------------------------|-----------|
+|`Excel Folder`              |Folder that contains `.xlsx` files, relative to the project root.|
+|`CSV Folder`                |Folder that contains exported `.csv` files, relative to the project root|
+|`Ignore Sheets Start With`  |Will ignore any sheet whose name starts with this string|
+|`Post Processor`            |A `ScriptableObject` to process the exported CSV files|
+|`Refresh Excel Files` button|Refresh the list of `.xlsx` files|
+|`Convert To CSV` button     |Convert only the selected `.xlsx` files into `.csv` files|
+|`Excel Files`               |The list of `.xlsx` files.|
 
 ## Excel File List
 
