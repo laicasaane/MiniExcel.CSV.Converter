@@ -14,8 +14,8 @@
         <ui:TextField picking-mode="Ignore" name="ignore-sheets" />
     </ui:VisualElement>
     <ui:VisualElement class="group-with-header">
-        <ui:Label text="Post Processor" display-tooltip-when-elided="true" tooltip="Process CSV files after the conversion" />
-        <uie:ObjectField tooltip="Process CSV files after the conversion" name="post-processor" allow-scene-objects="false" />
+        <ui:Label text="Post Processor" display-tooltip-when-elided="true" tooltip="Process the exported CSV files" />
+        <uie:ObjectField tooltip="Process the exported CSV files" name="post-processor" allow-scene-objects="false" />
     </ui:VisualElement>
     <ui:VisualElement name="button__group">
         <ui:Button text="Refresh Excel Files" display-tooltip-when-elided="true" name="refresh-button" enable-rich-text="false" />
