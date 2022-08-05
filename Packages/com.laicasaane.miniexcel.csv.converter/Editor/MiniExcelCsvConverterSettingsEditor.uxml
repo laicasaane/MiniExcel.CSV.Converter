@@ -5,6 +5,10 @@
         <ui:Label text="Excel Folder" display-tooltip-when-elided="true" enable-rich-text="false" tooltip="Select a folder which contains Excel (.xlsx) files" />
         <MiniExcelLibs.Controls.FolderBrowser is-relative-path="true" show-absolute-path="true" name="folder-browser-excel" tooltip="Select a folder which contains Excel (.xlsx) files" />
     </ui:VisualElement>
+    <ui:VisualElement class="group-with-header">
+        <ui:Label text="Ignore Excels Start With" display-tooltip-when-elided="true" enable-rich-text="false" />
+        <ui:TextField picking-mode="Ignore" name="ignore-excels" />
+    </ui:VisualElement>
     <ui:VisualElement class="folder-browser__group group-with-header">
         <ui:Label text="CSV Folder" display-tooltip-when-elided="true" enable-rich-text="false" tooltip="Select a folder to export CSV files" />
         <MiniExcelLibs.Controls.FolderBrowser is-relative-path="true" show-absolute-path="true" name="folder-browser-csv" tooltip="Select a folder to export CSV files" />

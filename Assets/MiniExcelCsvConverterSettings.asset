@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: MiniExcelCsvConverterSettings
   m_EditorClassIdentifier: 
   _relativeExcelFolderPath: Resources
+  _ignoreExcelsStartWith: ~$
   _relativeCsvFolderPath: Resources-CSV
   _ignoreSheetsStartWith: <>
   _postProcessor: {fileID: 11400000, guid: a68f09aa84f057446b08f5e1c7b43687, type: 2}

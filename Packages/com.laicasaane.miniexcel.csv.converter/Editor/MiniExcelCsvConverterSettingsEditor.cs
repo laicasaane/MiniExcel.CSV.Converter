@@ -14,6 +14,7 @@ namespace MiniExcelLibs.Csv.Converter
     public class MiniExcelCsvConverterSettingsEditor : UnityEditor.Editor
     {
         public static readonly string folderBrowserExcelUssName = "folder-browser-excel";
+        public static readonly string ignoreExcelsUssName = "ignore-excels";
         public static readonly string folderBrowserCsvUssName = "folder-browser-csv";
         public static readonly string ignoreSheetsUssName = "ignore-sheets";
         public static readonly string postProcessorUssName = "post-processor";
@@ -59,6 +60,16 @@ namespace MiniExcelLibs.Csv.Converter
                     folderBrowserExcel.openFolderHandler = new EditorOpenFolderHandler();
                     folderBrowserExcel.bindingPath = nameof(MiniExcelCsvConverterSettings._relativeExcelFolderPath);
                     folderBrowserExcel.onValueChanged += FolderBrowserExcel_onValueChanged;
+                }
+            }
+
+            /// IGNORE SHEETS START WITH CHARACTERS
+            {
+                var ignoreExcels = root.Q<TextField>(ignoreExcelsUssName);
+
+                if (ignoreExcels != null)
+                {
+                    ignoreExcels.bindingPath = nameof(MiniExcelCsvConverterSettings._ignoreExcelsStartWith);
                 }
             }
 
@@ -157,9 +168,15 @@ namespace MiniExcelLibs.Csv.Converter
             _fileMapNew.Clear();
             _settings.CopyFilesToMap(_fileMapPrev);
 
+            var ignoreStartPattern = _settings._ignoreExcelsStartWith;
+
             foreach (var filePath in Directory.EnumerateFiles(absolutePath, MiniExcelCsvConverter.EXCEL_FILTER))
             {
                 var fileName = Path.GetFileNameWithoutExtension(filePath);
+
+                if (string.IsNullOrWhiteSpace(ignoreStartPattern) == false
+                    && fileName.StartsWith(ignoreStartPattern))
+                    continue;
 
                 if (_fileMapPrev.TryGetValue(fileName, out var selected) == false)
                     selected = true;
@@ -243,19 +260,19 @@ namespace MiniExcelLibs.Csv.Converter
             AssetDatabase.SaveAssetIfDirty(target);
         }
 
-        private bool TryGetExcelFilePathAt(int index, out string path)
+        private bool TryGetExcelFilePathAt(int index, out string filePath)
         {
             var files = _settings._excelFiles;
 
             if ((uint)index >= (uint)files.Count)
             {
-                path = string.Empty;
+                filePath = string.Empty;
                 return false;
             }
 
             var file = files[index];
             var folderPath = PathUtility.GetAbsolutePath(_settings._relativeExcelFolderPath);
-            path = Path.Combine(folderPath, $"{file.path}{MiniExcelCsvConverter.EXCEL_EXT}").ToPlatformPath();
+            filePath = Path.Combine(folderPath, $"{file.path}{MiniExcelCsvConverter.EXCEL_EXT}").ToPlatformPath();
             return true;
         }
 
@@ -288,7 +305,7 @@ namespace MiniExcelLibs.Csv.Converter
         {
             if (TryGetExcelFilePathAt(index, out var filePath))
             {
-                LocateInExplorer(filePath);
+                LocateFileInExplorer(filePath);
             }
         }
 
@@ -297,19 +314,29 @@ namespace MiniExcelLibs.Csv.Converter
             if (TryGetCsvFolderPathAt(index, out var folderPath, out var rootPath))
             {
                 if (Directory.Exists(folderPath))
-                    LocateInExplorer(folderPath);
+                    LocateFolderInExplorer(folderPath);
                 else
-                    LocateInExplorer(rootPath);
+                    LocateFolderInExplorer(rootPath);
             }
         }
 
-        private static void LocateInExplorer(string argument, bool selected = false)
+        private static void LocateFolderInExplorer(string path)
         {
 #if UNITY_EDITOR_WIN
-            if (selected) argument = $"/e,/select,\"{argument}\"";
+            System.Diagnostics.Process.Start("explorer.exe", path);
+#elif UNITY_EDITOR_OSX
+            var argument = $"-R \"{path}\"";
+            System.Diagnostics.Process.Start("open", argument);
+#endif
+        }
+
+        private static void LocateFileInExplorer(string path)
+        {
+#if UNITY_EDITOR_WIN
+            var argument = $"/e,/select,\"{path}\"";
             System.Diagnostics.Process.Start("explorer.exe", argument);
 #elif UNITY_EDITOR_OSX
-            if (selected) argument = $"-R \"{argument}\"";
+            var argument = $"-R \"{path}\"";
             System.Diagnostics.Process.Start("open", argument);
 #endif
         }

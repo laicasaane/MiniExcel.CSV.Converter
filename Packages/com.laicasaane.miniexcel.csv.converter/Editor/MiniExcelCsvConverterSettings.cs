@@ -11,6 +11,9 @@ namespace MiniExcelLibs.Csv.Converter
         internal string _relativeExcelFolderPath = ".";
 
         [SerializeField]
+        internal string _ignoreExcelsStartWith = "";
+
+        [SerializeField]
         internal string _relativeCsvFolderPath = ".";
 
         [SerializeField]
